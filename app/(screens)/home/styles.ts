@@ -1,3 +1,3 @@
-const container = "flex"
+const container = "flex flex-1";
 
-export {container}
+export { container };
