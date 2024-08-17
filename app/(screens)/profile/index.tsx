@@ -41,24 +41,11 @@ const FavouriteGenresTab = () => {
 
   
   
-const renderScene = SceneMap({
-    first: FavouriteSongsTab,
-    second: FavouriteArtistsTab,
-    third: FavouriteGenresTab
-});
-
 export default function ProfilePage() {
     const { userProfile, isLoading } = useCurrentUser();
-    const layout = useWindowDimensions();
     const { openDrawer } = useDrawer();
     const [value, setValue] = useState<'songs'|'artists'|'genres'>('songs');
 
-    const [index, setIndex] = useState(0);
-    const [routes] = useState([
-      { key: 'first', title: 'Songs' },
-      { key: 'second', title: 'Artists' },
-      { key: 'third', title: 'Genres' }
-    ]);
 
     if (isLoading) {
         return (
