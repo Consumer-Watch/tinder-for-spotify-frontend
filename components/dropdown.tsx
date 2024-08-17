@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, TouchableOpacity, FlatList, Animated } from 'react-native';
 import { MoreVertical, Star, Trash2, SmilePlus, Play } from 'lucide-react-native';
 import { Image } from 'expo-image';
+import BottomSheet from './bottom-sheet';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from './ui/dropdown-menu';
 
 interface DropdownOption {
   label: string;
@@ -33,13 +35,12 @@ const Dropdown = ({ options, onSelect }: { options: DropdownOption[], onSelect: 
   };
 
   const renderItem = ({ item }) => (
-    <TouchableOpacity 
-      className="py-3 px-4 bg-[#121212] z-50 flex-row items-center"
+    <DropdownMenuItem 
       onPress={() => onItemPress(item)}
     >
       {getIcon(item.icon)}
       <Text className="text-white ml-3">{item.label}</Text>
-    </TouchableOpacity>
+    </DropdownMenuItem>
   );
 
   const getIcon = (iconName) => {
@@ -54,9 +55,37 @@ const Dropdown = ({ options, onSelect }: { options: DropdownOption[], onSelect: 
   };
 
   return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <TouchableOpacity 
+          className="p-2 rounded-full bg-[#B3B3B31A] border-[#EFEFEF33] border z-[999]"
+          //onPress={toggleDropdown}
+        >
+          <MoreVertical size={24} color="white" />
+        </TouchableOpacity>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className='w-64 native:w-72'>
+          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          {
+            options.map((option) => {
+              return renderItem({ item: option })
+            })
+          }
+      </DropdownMenuContent>
+      
+    <BottomSheet isOpen={isOpen}>
+      <View className='bg-[#B3B3B31A] z-[999]'>
+      </View>
+    </BottomSheet>
+    </DropdownMenu>
+  )
+
+  /*
+  return (
     <View className="relative">
       <TouchableOpacity 
-        className="p-2 rounded-full bg-[#B3B3B31A] border-[#EFEFEF33] border"
+        className="p-2 rounded-full bg-[#B3B3B31A] border-[#EFEFEF33] border z-[999]"
         onPress={toggleDropdown}
       >
         <MoreVertical size={24} color="white" />
@@ -64,7 +93,7 @@ const Dropdown = ({ options, onSelect }: { options: DropdownOption[], onSelect: 
 
       {isOpen && (
         <Animated.View 
-          className="absolute right-0 top-12 bg-[#B3B3B31A] rounded-lg overflow-hidden shadow-lg w-[200px] z-50"
+          className="absolute right-0 top-12 bg-[#B3B3B31A] rounded-lg overflow-hidden shadow-lg w-[200px] z-[999]"
           style={{
             //opacity: slideAnim,
             transform: [{
@@ -75,10 +104,10 @@ const Dropdown = ({ options, onSelect }: { options: DropdownOption[], onSelect: 
             }],
             backgroundColor:"#B3B3B31A",
             opacity: 1,
-            zIndex: 60
+            zIndex: 999
           }}
         >
-          <View className='bg-[#B3B3B31A]'>
+          <View className='bg-[#B3B3B31A] z-[999]'>
             {
               options.map((option) => {
                 return renderItem({ item: option })
@@ -88,7 +117,7 @@ const Dropdown = ({ options, onSelect }: { options: DropdownOption[], onSelect: 
         </Animated.View>
       )}
     </View>
-  );
+  );*/
 };
 
 export default Dropdown;
