@@ -23,37 +23,45 @@ import { saveFriendRequestSent } from '../../../utils/functions';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { Text } from "~/components/ui/text";
 
+import CustomBackButton from "../../../components/CustomBackButton";
 
 const FavouriteSongsTab = () => {
-    const { id } = useLocalSearchParams();
-    const { 
-        favouriteSongsLoading: isLoading, 
-        userFavouriteSongs: favouriteSongs 
-    } = useFavouriteSongs(id as string);
+  const { id } = useLocalSearchParams();
+  const {
+    favouriteSongsLoading: isLoading,
+    userFavouriteSongs: favouriteSongs,
+  } = useFavouriteSongs(id as string);
 
-
-    return <FavoriteSongs isLoading={isLoading} favouriteSongs={favouriteSongs} />
+  return (
+    <FavoriteSongs isLoading={isLoading} favouriteSongs={favouriteSongs} />
+  );
 };
-  
+
 const FavouriteArtistsTab = () => {
-    const { id } = useLocalSearchParams();
-    const { 
-        favouriteArtistsLoading: isLoading, 
-        userFavouriteArtists: favouriteArtists 
-    } = useFavouriteArtists(id as string);
+  const { id } = useLocalSearchParams();
+  const {
+    favouriteArtistsLoading: isLoading,
+    userFavouriteArtists: favouriteArtists,
+  } = useFavouriteArtists(id as string);
 
-
-    return <FavouriteArtists isLoading={isLoading} favouriteArtists={favouriteArtists} />
+  return (
+    <FavouriteArtists
+      isLoading={isLoading}
+      favouriteArtists={favouriteArtists}
+    />
+  );
 };
 
 const FavouriteGenresTab = () => {
-    const { id } = useLocalSearchParams();
-    const { 
-        favouriteGenresLoading: isLoading, 
-        userFavouriteGenres: favouriteGenres 
-    } = useFavouriteGenres(id as string);
+  const { id } = useLocalSearchParams();
+  const {
+    favouriteGenresLoading: isLoading,
+    userFavouriteGenres: favouriteGenres,
+  } = useFavouriteGenres(id as string);
 
-    return <FavouriteGenres isLoading={isLoading} favouriteGenres={favouriteGenres} />
+  return (
+    <FavouriteGenres isLoading={isLoading} favouriteGenres={favouriteGenres} />
+  );
 };
   
   
@@ -84,57 +92,6 @@ export default function ProfilePage() {
     })
 
     
-    // useEffect(() => {
-    //     const checkRequestStatus = async () => {
-    //         if (!isFriend) {
-    //         const requestAlreadySent = await checkIfFriendRequestSent(currentUser.id, id as string);
-    //         setRequestSent(requestAlreadySent);
-    //         }  else {
-    //             // If they are now friends, then the request not pending anymore
-    //             setRequestSent(false);
-    //         } 
-
-    //     };
-        
-    //     checkRequestStatus();
-    // }, [currentUser.id, id, isFriend]); 
-
-    
-
-
-    
-    
-
-    
-// Function to save that a friend request has been sent
-//     async function saveFriendRequestSent(currentUser_id, friend_id) {
-//   try {
-//     const key = `friendRequest-${currentUser_id}-${friend_id}`;
-//     await AsyncStorage.setItem(key, 'sent');
-//     console.log('Friend request status saved');
-//   } catch (error) {
-//     console.error('Error saving friend request status', error);
-//   }
-// }
-
-// Function to check if a friend request has been sent
-// async function checkIfFriendRequestSent(currentUser_id, friend_id) {
-//     try {
-//       const key = `friendRequest-${currentUser_id}-${friend_id}`;
-//       const value = await AsyncStorage.getItem(key);
-//       if(value !== null) {
-//         // Value retrieved
-//         console.log('Friend request status:', value);
-//         return true;
-//       }
-//       // No value found
-//       return false;
-//     } catch (error) {
-//       console.error('Error retrieving friend request status', error);
-//       return false;
-//     }
-//   }
-
     const handleProfileAction = async () => {
         if (isFriend) {
             return null //Do nothing
@@ -179,92 +136,78 @@ export default function ProfilePage() {
     }
 
     return (
-        <View className="px-3 h-screen w-screen">
-            <Drawer.Screen options={{
-                headerBackground: () => (
-                    <ImageBackground
-                        source={{ uri: userProfile?.banner || 'https://upload.wikimedia.org/wikipedia/en/3/32/Frank_Ocean-Nostalgia_Ultra.jpeg' }}
-                        style={{ height: verticalScale(107), top: 0, zIndex: -20 }}
-                    />
-                ),
-                headerLeft: () => (
-                    <Pressable onPress={openDrawer}>
-                        <View className=' mt-6  ml-6 w-6 h-6 rounded-md border-[#EFEFEF33] bg-[#121212]  border  p-5 items-center justify-center'>
-                            <ArrowLeft size = "14px" stroke="white"/>
-                        </View>
-                    </Pressable>
-                )
-            }} />
-
-            <View style={{ zIndex: 40 }} className="flex flex-row mt-16 mb-4 items-end justify-between z-20">
-                <Avatar
-                    src={userProfile?.profile_image}
-                    initials={userProfile?.name.at(0) || "S"}
-                    width={70}
-                    height={70}
-                    containerStyle="z-40"
+    <View className="px-3 h-screen w-screen">
+        <Drawer.Screen options={{
+            headerBackground: () => (
+                <ImageBackground
+                    source={{ uri: userProfile?.banner || 'https://upload.wikimedia.org/wikipedia/en/3/32/Frank_Ocean-Nostalgia_Ultra.jpeg' }}
+                    style={{ height: verticalScale(107), top: 0, zIndex: -20 }}
                 />
-                {
-                    currentUser?.id === id ?
-                    <TouchableOpacity className="text-white border border-[#EFEFEF4A] bg-[#EFEFEF1A] py-3 px-6 rounded-lg">
-                        <Text className="text-white font-semibold">Edit Profile</Text>
-                    </TouchableOpacity>
-                    :
-                    <TouchableOpacity 
-                        disabled={isFriendLoading || acceptFriendRequestMutation.isPending || addFriendMutation.isPending || requestSent|| requestFirstSent}
-                        className={cn("text-white disabled:opacity-50 bg-primary py-3 px-6 rounded-lg", isFriend && "bg-green-800/50")}
-                        onPress={handleProfileAction}
-                    >
-                        <Text className={cn("text-black font-semibold", isFriend && "text-primary")}>
-                            {
-                                isFriend ? "Friends" :
-                                requestFirstSent || requestSent === true ? "Requested" :
-                                !!!friendRequestPresent ? "Add Friend" : 
-                                "Accept Request"
-                            }
-                        </Text>
-                    </TouchableOpacity>
-                }
-            </View>
+            ),
+            headerLeft: () => (
+                <Pressable onPress={openDrawer}>
+                    <View className=' mt-6  ml-6 w-6 h-6 rounded-md border-[#EFEFEF33] bg-[#121212]  border  p-5 items-center justify-center'>
+                        <ArrowLeft size = "14px" stroke="white"/>
+                    </View>
+                </Pressable>
+            )
+        }} />
 
-            <Text className="text-white text-3xl font-bold">{userProfile?.name}</Text>
-            <Text className="text-lg text-light-grey">@{userProfile?.spotify_username}</Text>
-            
-            <View className="border border-[#EFEFEF33] rounded-lg px-4 py-3 my-4">
-                <Text className="text-white font-medium text-xl mb-3">{userProfile?.bio || "Insert a bio"}</Text>
-
-                <View className="flex flex-row gap-1 items-center">
-                    <Calendar size="16px" stroke="#EFEFEF33"/>
-                    <Text className="text-[#EFEFEF33] text-lg">
-                        Joined {userProfile?.created_at || "June " +new Date().getFullYear()}
+        <View style={{ zIndex: 40 }} className="flex flex-row mt-16 mb-4 items-end justify-between z-20">
+            <Avatar
+                src={userProfile?.profile_image}
+                initials={userProfile?.name.at(0) || "S"}
+                width={70}
+                height={70}
+                containerStyle="z-40"
+            />
+            {
+                currentUser?.id === id ?
+                <TouchableOpacity className="text-white border border-[#EFEFEF4A] bg-[#EFEFEF1A] py-3 px-6 rounded-lg">
+                    <Text className="text-white font-semibold">Edit Profile</Text>
+                </TouchableOpacity>
+                :
+                <TouchableOpacity 
+                    disabled={isFriendLoading || acceptFriendRequestMutation.isPending || addFriendMutation.isPending || requestSent|| requestFirstSent}
+                    className={cn("text-white disabled:opacity-50 bg-primary py-3 px-6 rounded-lg", isFriend && "bg-green-800/50")}
+                    onPress={handleProfileAction}
+                >
+                    <Text className={cn("text-black font-semibold", isFriend && "text-primary")}>
+                        {
+                            isFriend ? "Friends" :
+                            requestFirstSent || requestSent === true ? "Requested" :
+                            !!!friendRequestPresent ? "Add Friend" : 
+                            "Accept Request"
+                        }
                     </Text>
-                </View>
-            </View>
-
-            <Tabs value={value} onValueChange={(value) => setValue(value as any)}>
-                <TabsList className='flex-row w-full mb-5 native:h-[57px]'>
-                    <TabsTrigger value='songs' className='flex-1 py-2'>
-                        <Text className="text-lg">Songs</Text>
-                    </TabsTrigger>
-                    <TabsTrigger value='artists' className='flex-1 py-2'>
-                        <Text>Artists</Text>
-                    </TabsTrigger>
-                    <TabsTrigger value='genres' className='flex-1 py-2'>
-                        <Text>Genres</Text>
-                    </TabsTrigger>
-                </TabsList>
-
-                <TabsContent value="songs">
-                    <FavouriteSongsTab/>
-                </TabsContent>
-                <TabsContent value="artists">
-                    <FavouriteArtistsTab/>
-                </TabsContent>
-                <TabsContent value="genres">
-                    <FavouriteGenresTab/>
-                </TabsContent>
-            </Tabs>
-
+                </TouchableOpacity>
+            }
         </View>
+
+        <Tabs value={value} onValueChange={(value) => setValue(value as any)}>
+            <TabsList className='flex-row w-full mb-5 native:h-[57px]'>
+                <TabsTrigger value='songs' className='flex-1 py-2'>
+                    <Text className="text-lg">Songs</Text>
+                </TabsTrigger>
+                <TabsTrigger value='artists' className='flex-1 py-2'>
+                    <Text>Artists</Text>
+                </TabsTrigger>
+                <TabsTrigger value='genres' className='flex-1 py-2'>
+                    <Text>Genres</Text>
+                </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="songs">
+                <FavouriteSongsTab/>
+            </TabsContent>
+            <TabsContent value="artists">
+                <FavouriteArtistsTab/>
+            </TabsContent>
+            <TabsContent value="genres">
+                <FavouriteGenresTab/>
+            </TabsContent>
+        </Tabs>
+
+    </View>
     )
 }
