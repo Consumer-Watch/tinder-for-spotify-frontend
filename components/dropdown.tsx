@@ -32,6 +32,7 @@ const Dropdown = ({ options, onSelect }: { options: DropdownOption[], onSelect: 
 
   const renderItem = ({ item }) => (
     <DropdownMenuItem 
+      key={item.label}
       onPress={() => onItemPress(item)}
     >
       {getIcon(item.icon)}
