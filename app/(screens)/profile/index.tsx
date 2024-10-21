@@ -85,12 +85,12 @@ export default function ProfilePage() {
       />
 
       <View
-        style={{ zIndex: 40 }}
+        style={{ zIndex: 999, paddingTop: verticalScale(10) }}
         className="flex flex-row mt-10 items-end justify-between z-20"
       >
         <Avatar
             alt="Avatar Image"
-            className="z-40 w-[50px] h-[50px]"
+            className="z-[999] w-[60px] h-[60px]"
         >
             <AvatarImage source={{ uri: userProfile?.profile_image! }}/>
             <AvatarFallback>
@@ -117,14 +117,14 @@ export default function ProfilePage() {
         </Link>
       </View>
 
-      <View className="border border-[#EFEFEF33] rounded-lg px-4 py-3 my-4">
-        <Text className="text-white font-medium text-xl mb-3">
+      <View className="border border-[#EFEFEF33] rounded-lg px-3 py-2 my-4">
+        <Text className="text-white font-medium text-lg mb-3">
           {userProfile?.bio || "Insert a bio"}
         </Text>
 
         <View className="flex flex-row gap-1 items-center">
           <Calendar size="16px" stroke="#EFEFEF33" />
-          <Text className="text-[#EFEFEF33] text-lg">
+          <Text className="text-[#EFEFEF33] text-base">
             Joined{" "}
             {userProfile?.created_at || "June " + new Date().getFullYear()}
           </Text>

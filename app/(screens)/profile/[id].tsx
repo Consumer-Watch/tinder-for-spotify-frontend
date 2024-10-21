@@ -141,7 +141,7 @@ export default function ProfilePage() {
             headerLeft: () => <CustomBackButton/>
         }} />
 
-        <View style={{ zIndex: 40 }} className="flex flex-row mt-16 mb-4 items-end justify-between z-20">
+        <View style={{ zIndex: 40 }} className="flex flex-row mt-16 mb-2 items-end justify-between z-20">
             <Avatar
                 src={userProfile?.profile_image}
                 initials={userProfile?.name.at(0) || "S"}
@@ -171,6 +171,30 @@ export default function ProfilePage() {
                 </TouchableOpacity>
             }
         </View>
+
+        <View>
+          <Text className="text-white text-xl font-bold">
+            {userProfile?.name}
+          </Text>
+          <Text className="text-base text-light-grey">
+            @{userProfile?.spotify_username}
+          </Text>
+        </View>
+
+        <View className="border border-[#EFEFEF33] rounded-lg px-3 py-2 my-2 mb-4">
+            <Text className="text-white font-medium text-lg mb-3">
+                {userProfile?.bio || "Insert a bio"}
+            </Text>
+
+            <View className="flex flex-row gap-1 items-center">
+            <Calendar size="16px" stroke="#EFEFEF33" />
+                <Text className="text-[#EFEFEF33] text-base">
+                    Joined{" "}
+                    {userProfile?.created_at || "June " + new Date().getFullYear()}
+                </Text>
+            </View>
+        </View>
+
 
         <Tabs value={value} onValueChange={(value) => setValue(value as any)}>
             <TabsList className='flex-row w-full mb-5 native:h-[57px]'>
