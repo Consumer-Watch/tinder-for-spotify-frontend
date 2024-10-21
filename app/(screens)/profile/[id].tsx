@@ -121,13 +121,7 @@ export default function ProfilePage() {
                 <Drawer.Screen 
                     options={{ 
                         headerBackground: () => null,
-                        headerLeft: () => (
-                            <Pressable onPress={() => router.back()}>
-                                <View className=' mt-6  ml-6 w-6 h-6 rounded-md border-[#EFEFEF33] bg-[#121212]  border  p-5 items-center justify-center'>
-                                    <ArrowLeft size = "14px" stroke="white"/>
-                                </View>
-                            </Pressable>    
-                        ) 
+                        headerLeft: () => <CustomBackButton/>
                     }} 
                 />
                 <ActivityIndicator size="large" color="#1DB954" />
@@ -144,13 +138,7 @@ export default function ProfilePage() {
                     style={{ height: verticalScale(107), top: 0, zIndex: -20 }}
                 />
             ),
-            headerLeft: () => (
-                <Pressable onPress={openDrawer}>
-                    <View className=' mt-6  ml-6 w-6 h-6 rounded-md border-[#EFEFEF33] bg-[#121212]  border  p-5 items-center justify-center'>
-                        <ArrowLeft size = "14px" stroke="white"/>
-                    </View>
-                </Pressable>
-            )
+            headerLeft: () => <CustomBackButton/>
         }} />
 
         <View style={{ zIndex: 40 }} className="flex flex-row mt-16 mb-4 items-end justify-between z-20">
