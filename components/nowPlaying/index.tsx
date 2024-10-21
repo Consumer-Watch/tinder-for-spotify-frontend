@@ -80,7 +80,7 @@ const NowPlaying: React.FC<NowPlayingProps> = ({
                         </TextTicker>
                     <TextTicker duration={15000} style={styles.text}>{artist}</TextTicker>
                 </View>
-                <Image style={{ borderRadius: 5, width: scale(40), height: verticalScale(40) }} source={{ uri: albumArtUrl }} />
+                <Image style={{ borderRadius: 1, width: scale(50), height: verticalScale(40) }} source={{ uri: albumArtUrl }} />
             </View>
             <View style={styles.divider}></View>
             <View style={styles.row}>

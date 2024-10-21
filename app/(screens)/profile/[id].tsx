@@ -1,8 +1,7 @@
-import { ActivityIndicator, Pressable, ScrollView, Text, useWindowDimensions, View } from "react-native";
+import { ActivityIndicator, Pressable, TouchableOpacity, useWindowDimensions, View } from "react-native";
 import Page from "../../../components/page";
 import useCurrentUser from "../../../hooks/current-user";
 import Avatar from "../../../components/avatar";
-import { SceneMap, TabBar, TabBarItem, TabView } from "react-native-tab-view";
 import { useState } from "react";
 import { Drawer } from "expo-router/drawer";
 import { Activity, ArrowLeft, Calendar } from "lucide-react-native";
@@ -19,11 +18,11 @@ import { cn } from "../../../lib/utils";
 import FavoriteSongs from "../../../components/profile/songs";
 import FavouriteArtists from "../../../components/profile/artists";
 import FavouriteGenres from "../../../components/profile/genres";
-import { couldStartTrivia } from "typescript";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useEffect } from 'react';
 import useCheckRequestStatus from '../../../hooks/check-request-status';
 import { saveFriendRequestSent } from '../../../utils/functions';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
+import { Text } from "~/components/ui/text";
+
 
 const FavouriteSongsTab = () => {
     const { id } = useLocalSearchParams();
@@ -58,11 +57,6 @@ const FavouriteGenresTab = () => {
 };
   
   
-const renderScene = SceneMap({
-    songs: FavouriteSongsTab,
-    artists: FavouriteArtistsTab,
-    genres: FavouriteGenresTab
-});
 
 export default function ProfilePage() {
     const { id } = useLocalSearchParams();
@@ -72,6 +66,8 @@ export default function ProfilePage() {
     const { openDrawer } = useDrawer();
     const router = useRouter();
     const [requestFirstSent, setRequestFirstSent] = useState(false);
+    const [value, setValue] = useState<'songs'|'artists'|'genres'>('songs');
+
   
 
     const { 
@@ -161,12 +157,6 @@ export default function ProfilePage() {
         return await acceptFriendRequestMutation.mutateAsync({ user_id: id as string })
     }
 
-    const [index, setIndex] = useState(0);
-    const [routes] = useState([
-      { key: 'songs', title: 'Songs' },
-      { key: 'artists', title: 'Artists' },
-      { key: 'genres', title: 'Genres' }
-    ]);
 
     if (isLoading) {
         return (
@@ -194,7 +184,7 @@ export default function ProfilePage() {
                 headerBackground: () => (
                     <ImageBackground
                         source={{ uri: userProfile?.banner || 'https://upload.wikimedia.org/wikipedia/en/3/32/Frank_Ocean-Nostalgia_Ultra.jpeg' }}
-                        style={{ height: verticalScale(115), top: 0, zIndex: -20 }}
+                        style={{ height: verticalScale(107), top: 0, zIndex: -20 }}
                     />
                 ),
                 headerLeft: () => (
@@ -206,21 +196,21 @@ export default function ProfilePage() {
                 )
             }} />
 
-            <View style={{ zIndex: 40 }} className="flex flex-row mt-20 items-end justify-between z-20">
+            <View style={{ zIndex: 40 }} className="flex flex-row mt-16 mb-4 items-end justify-between z-20">
                 <Avatar
                     src={userProfile?.profile_image}
                     initials={userProfile?.name.at(0) || "S"}
-                    width={50}
-                    height={50}
+                    width={70}
+                    height={70}
                     containerStyle="z-40"
                 />
                 {
                     currentUser?.id === id ?
-                    <Pressable className="text-white border border-[#EFEFEF4A] bg-[#EFEFEF1A] py-3 px-6 rounded-lg">
+                    <TouchableOpacity className="text-white border border-[#EFEFEF4A] bg-[#EFEFEF1A] py-3 px-6 rounded-lg">
                         <Text className="text-white font-semibold">Edit Profile</Text>
-                    </Pressable>
+                    </TouchableOpacity>
                     :
-                    <Pressable 
+                    <TouchableOpacity 
                         disabled={isFriendLoading || acceptFriendRequestMutation.isPending || addFriendMutation.isPending || requestSent|| requestFirstSent}
                         className={cn("text-white disabled:opacity-50 bg-primary py-3 px-6 rounded-lg", isFriend && "bg-green-800/50")}
                         onPress={handleProfileAction}
@@ -233,7 +223,7 @@ export default function ProfilePage() {
                                 "Accept Request"
                             }
                         </Text>
-                    </Pressable>
+                    </TouchableOpacity>
                 }
             </View>
 
@@ -251,44 +241,30 @@ export default function ProfilePage() {
                 </View>
             </View>
 
-            <TabView
-                navigationState={{ index, routes }}
-                renderScene={renderScene}
-                onIndexChange={setIndex}
-                initialLayout={{ width: layout.width }}      
-                style={{ width: "100%" }}
-                renderTabBar={(props) => (
-                    <TabBar
-                        {...props}
-                        activeColor="#000000"
-                        inactiveColor="#ffffff"
-                        
-                        labelStyle={{ fontWeight: '600', textTransform: 'capitalize', fontSize: moderateScale(16) }}
-                        style={{ 
-                            backgroundColor: "#B3B3B31A",
-                            borderWidth: 1,
-                            borderColor: "#EFEFEF33",
-                            borderRadius: 10,
-                            marginBottom: 10,
-                            padding: 5,
-                        }}
-                        contentContainerStyle={{ display: "flex", flexDirection: "row", gap: 10 }}
-                        //tabStyle={{ flex: 0.5 }}
-                        indicatorStyle={{ backgroundColor: "#1DB954", height: "100%", borderRadius: 10 }}
-                        indicatorContainerStyle={{ margin: 7, marginRight: 10 }}
-                        renderTabBarItem={(props) => (
-                            <TabBarItem
-                                {...props}
-                                style={{ width: layout.width/(3.4) }}
-                                
-                            />
-                        )}
-                    />
-                )}    
-                
-                
-                    
-            />
+            <Tabs value={value} onValueChange={(value) => setValue(value as any)}>
+                <TabsList className='flex-row w-full mb-5 native:h-[57px]'>
+                    <TabsTrigger value='songs' className='flex-1 py-2'>
+                        <Text className="text-lg">Songs</Text>
+                    </TabsTrigger>
+                    <TabsTrigger value='artists' className='flex-1 py-2'>
+                        <Text>Artists</Text>
+                    </TabsTrigger>
+                    <TabsTrigger value='genres' className='flex-1 py-2'>
+                        <Text>Genres</Text>
+                    </TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="songs">
+                    <FavouriteSongsTab/>
+                </TabsContent>
+                <TabsContent value="artists">
+                    <FavouriteArtistsTab/>
+                </TabsContent>
+                <TabsContent value="genres">
+                    <FavouriteGenresTab/>
+                </TabsContent>
+            </Tabs>
+
         </View>
     )
 }

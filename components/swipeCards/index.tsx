@@ -11,6 +11,7 @@ import useCurrentUser from "../../hooks/current-user";
 import useUserProfile from '../../hooks/user';
 import { saveFriendRequestSent } from '../../utils/functions';
 import { useState } from 'react';
+import TextTicker from 'react-native-text-ticker';
 
 
 const ProfileCard = (
@@ -78,7 +79,7 @@ const ProfileCard = (
                     Likes
                 </Text>
                 <View className={styles.row}>
-                    {likedGenre.slice(0, 6).map((genre) => (
+                    {likedGenre.slice(0, 5).map((genre) => (
                         <View key={genre} className={styles.liked}>
                             <Text className={styles.likedText}>{genre}</Text>
                         </View>
@@ -86,17 +87,21 @@ const ProfileCard = (
                 </View>
                 <Text className={styles.favoriteSong}>Favorite Song</Text>
                 <View className='flex-row gap-x-4'>
-                    <Image className="w-9 h-9 rounded-md" source={{ uri: favoriteSong.image}} />
+                    <Image className="w-9 h-9 rounded-[1px]" source={{ uri: favoriteSong.image}} />
                     <View>
-                        <Text className="text-base font-bold text-white">{favoriteSong.name}</Text>
-                        <Text className="text-sm text-[#EFEFEF80]">{favoriteSong.artists.map((artist) => artist.name).join(', ')}</Text>
+                        <TextTicker duration={15000} className="text-base font-bold text-white">
+                            {favoriteSong.name}
+                        </TextTicker>
+                        <TextTicker duration={15000} className="text-sm text-[#EFEFEF80]">
+                            {favoriteSong.artists.map((artist) => artist.name).join(', ')}
+                        </TextTicker>
                     </View>
                 </View>
                 <Text className={styles.favoriteArtist}>Favorite Artist</Text>
                 <View className='flex-row gap-x-4'>
-                    <Image className="w-9 h-9 rounded-md" source={{ uri: favoriteArtist.image }} />
+                    <Image className="w-9 h-9 rounded-[1px]" source={{ uri: favoriteArtist.image }} />
                     <View>
-                        <Text className="text-base font-bold text-white">{favoriteArtist.name}</Text>
+                        <TextTicker duration={15000} className="text-base font-bold text-white">{favoriteArtist.name}</TextTicker>
                     </View>
                 </View>
             </View>

@@ -61,7 +61,7 @@ export default function ProfilePage() {
                 headerBackground: () => (
                     <ImageBackground
                         source={{ uri: userProfile?.banner || 'https://upload.wikimedia.org/wikipedia/en/3/32/Frank_Ocean-Nostalgia_Ultra.jpeg' }}
-                        style={{ height: verticalScale(120), top: 0, zIndex: -20 }}
+                        style={{ height: verticalScale(107), top: 0, zIndex: -20 }}
                         contentPosition="center"
                     />
                 ),
@@ -74,7 +74,7 @@ export default function ProfilePage() {
                 )
             }} />
 
-            <View style={{ zIndex: 100 }} className="flex flex-row mt-12 items-end justify-between z-50 relative">
+            <View style={{ zIndex: 100 }} className="flex flex-row mt-16 items-end justify-between z-50 relative">
 
                 <Avatar className="w-20 h-20 z-50" alt="Profile Picture">
                     <AvatarImage source={{ uri: userProfile?.profile_image }}/>
@@ -104,14 +104,14 @@ export default function ProfilePage() {
             </View>
 
             <Tabs value={value} onValueChange={(value) => setValue(value as any)}>
-                <TabsList className='flex-row w-full mb-5'>
-                    <TabsTrigger value='songs' className='flex-1'>
+                <TabsList className='flex-row w-full mb-5 native:h-[57px]'>
+                    <TabsTrigger value='songs' className='flex-1 py-2'>
                         <Text className="text-lg">Songs</Text>
                     </TabsTrigger>
-                    <TabsTrigger value='artists' className='flex-1'>
+                    <TabsTrigger value='artists' className='flex-1 py-2'>
                         <Text>Artists</Text>
                     </TabsTrigger>
-                    <TabsTrigger value='genres' className='flex-1'>
+                    <TabsTrigger value='genres' className='flex-1 py-2'>
                         <Text>Genres</Text>
                     </TabsTrigger>
                 </TabsList>

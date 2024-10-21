@@ -1,3 +1,4 @@
+import React from "react";
 import { ScrollView, View, Text, Pressable, Modal, FlatList, Linking } from "react-native";
 import { Skeleton } from "../skeleton";
 import { scale, verticalScale } from "react-native-size-matters";
@@ -6,6 +7,8 @@ import {useState} from "react";
 import { FavouriteTrack } from "../../types/types";
 import { SpotifyLink } from "../spotify-linking";
 import Dropdown from "../dropdown";
+import TextTicker from "react-native-text-ticker";
+import { cn } from "~/lib/utils";
 
 interface FavouriteSongsProp {
     isLoading: boolean;
@@ -47,15 +50,22 @@ const FavoriteSongsTab = ({ isLoading, favouriteSongs }: FavouriteSongsProp) => 
                         }
                     </>
                     :
-                    favouriteSongs?.map((track) => (
-                    <View className="bg-[#B3B3B31A] rounded-md flex flex-row gap-4 items-center p-3 border border-[#EFEFEF33] mb-4" key={track.id}>
-                        <Text className="text-white py-4 px-5 font-bold rounded-md border border-[#EFEFEF4A] bg-[#B3B3B31A]">
+                    favouriteSongs?.map((track, index) => (
+                    <View className={cn("bg-[#B3B3B31A] rounded-md flex flex-row gap-4 items-center p-3 border border-[#EFEFEF33] mb-4", index === favouriteSongs.length - 1 && "mb-10")} key={track.id}>
+                        <Text className="text-white py-3 px-4 font-bold rounded-md border border-[#EFEFEF4A] bg-[#B3B3B31A]">
                             {track?.position}
                         </Text>
-                        <Image source={{ uri: track?.image }} style={{ width: scale(50), height: verticalScale(50), borderRadius: 6 }}/>
+                        <Image 
+                            source={{ uri: track?.image }} 
+                            style={{ width: scale(50), height: verticalScale(47), borderRadius: 1 }}
+                        />
                         <View className="w-[45%] flex flex-col gap-0.5">
-                            <Text className="text-white text-xl font-semibold whitespace-break-spaces">{track.name}</Text>
-                            <Text className="text-light-grey">{track.artists.map((artist) => artist.name).join(', ')}</Text>
+                            <TextTicker duration={15000} className="text-white text-lg font-semibold whitespace-break-spaces">
+                                {track.name}
+                            </TextTicker>
+                            <TextTicker duration={15000} className="text-light-grey text-sm">
+                                {track.artists.map((artist) => artist.name).join(', ')}
+                            </TextTicker>
                         </View>
                         <Dropdown
                             options={data}
