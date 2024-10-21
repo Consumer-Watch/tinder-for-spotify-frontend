@@ -1,5 +1,5 @@
 import {useRef} from "react"
-import { Pressable, Text, View } from "react-native"
+import { Pressable, Text, TouchableOpacity, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context";
 import Page from "../components/page";
 import { Image } from "expo-image";
@@ -59,10 +59,10 @@ const LoginPage = () => {
                 </Text>
             </View>
 
-            <Pressable className="bg-primary h-14 w-full rounded-xl flex flex-row items-center justify-center gap-2" onPress={getLoginUrl}>
+            <TouchableOpacity className="bg-primary h-14 w-full rounded-xl flex flex-row items-center justify-center gap-2" onPress={getLoginUrl}>
                 <Text className="font-semibold text-xl">Login with</Text>
                 <Image source={require('../assets/svg/spotify.svg')} style={{ width: 101, height: 30 }}/>
-            </Pressable>
+            </TouchableOpacity>
 
             {
                 !loginUrl ? null :
